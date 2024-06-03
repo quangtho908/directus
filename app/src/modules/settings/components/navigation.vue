@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { DEFAULT_REPORT_BUG_URL, DEFAULT_REPORT_FEATURE_URL } from '@/constants.js';
-import { useServerStore } from '@/stores/server';
-import { useSettingsStore } from '@/stores/settings';
-import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -15,8 +11,6 @@ type Link = {
 };
 
 const { t } = useI18n();
-const { info } = storeToRefs(useServerStore());
-const { settings } = storeToRefs(useSettingsStore());
 
 const links = computed<Link[][]>(() => [
 	[
@@ -60,29 +54,11 @@ const links = computed<Link[][]>(() => [
 	],
 	[
 		{
-			icon: 'storefront',
-			name: t('marketplace'),
-			to: '/settings/marketplace',
-			chip: t('beta'),
-		},
-		{
 			icon: 'category',
 			name: t('extensions'),
 			to: '/settings/extensions',
 		},
-	],
-	[
-		{
-			icon: 'bug_report',
-			name: t('report_bug'),
-			href: settings.value?.report_bug_url ?? DEFAULT_REPORT_BUG_URL,
-		},
-		{
-			icon: 'new_releases',
-			name: t('request_feature'),
-			href: settings.value?.report_feature_url ?? DEFAULT_REPORT_FEATURE_URL,
-		},
-	],
+	]
 ]);
 </script>
 
@@ -102,12 +78,6 @@ const links = computed<Link[][]>(() => [
 			<v-divider v-if="index !== links.length - 1" :key="index" />
 		</template>
 
-		<v-list-item href="https://github.com/directus/directus/releases" class="version">
-			<v-list-item-icon><v-icon name="directus" /></v-list-item-icon>
-			<v-list-item-content>
-				<v-text-overflow class="version" :text="`Directus ${info.version}`" />
-			</v-list-item-content>
-		</v-list-item>
 	</v-list>
 </template>
 
